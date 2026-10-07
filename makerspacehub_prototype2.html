@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MakerSpaceHub+ Prototype 2</title>
+<script type="text/javascript" src="/ruxitagentjs_ICANVfqru_10343260715123811.js" data-dtconfig="rid=RID_1041050055|rpid=-1070120941|domain=abbvienet.com|reportUrl=/rb_16a183f6-c871-4082-850b-a1f7a2ecd0b1|app=ea7c4b59f27d43eb|cuc=oao3vfhf|owasp=1|mel=100000|featureHash=ICANVfqru|dpvc=1|lastModification=1790507166068|tp=500,50,0|rdnt=1|uxrgce=1|srbbv=2|agentUri=/ruxitagentjs_ICANVfqru_10343260715123811.js"></script><style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    color: #111;
+  }
+  .screen {
+    display: none;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border: 2px solid #000;
+    min-height: 500px;
+  }
+  .screen.active {
+    display: block;
+  }
+  h1 {
+    font-size: 22px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 8px;
+    margin-top: 10px;
+  }
+  .logo-placeholder {
+    border: 2px dashed #999;
+    width: 180px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    color: #888;
+    font-style: italic;
+    font-size: 14px;
+  }
+  .card {
+    border: 1px solid #000;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  input[type="text"], input[type="date"], select {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #000;
+    font-size: 14px;
+    background: #fff;
+  }
+  button {
+    border: 1px solid #000;
+    background: #eee;
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover {
+    background: #ddd;
+  }
+  .role-btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  .note {
+    font-style: italic;
+    font-size: 12px;
+    color: #555;
+    margin-top: 15px;
+    text-align: center;
+  }
+  .box {
+    border: 1px solid #000;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  .box-title {
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .back-link {
+    display: inline-block;
+    margin-top: 20px;
+    cursor: pointer;
+    text-decoration: underline;
+    color: #000;
+    font-size: 14px;
+  }
+  .error-msg {
+    border: 1px solid #000;
+    background: #f5f5f5;
+    padding: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    border: 1px solid #000;
+    padding: 6px 8px;
+    font-size: 13px;
+    text-align: left;
+  }
+  th {
+    background: #eee;
+  }
+  .reset-btn {
+    float: right;
+  }
+  .top-bar {
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .confirmation-box {
+    border: 1px solid #000;
+    padding: 20px;
+    max-width: 400px;
+    margin: 20px auto;
+  }
+  .confirmation-box p {
+    margin: 8px 0;
+    font-size: 15px;
+  }
+  .center {
+    text-align: center;
+  }
+  .status-cancelled {
+    color: #777;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- SCREEN 1: LOGIN -->
+<div id="loginScreen" class="screen active">
+  <div class="logo-placeholder">Logo Here</div>
+  <h1 class="center">MakerSpaceHub+ — Login</h1>
+  <div class="card">
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter username">
+    <label for="password">Password</label>
+    <input type="text" id="password" placeholder="Enter password">
+
+    <button class="role-btn" onclick="goToStudent()">Student / Maker</button>
+    <button class="role-btn" onclick="showScreen('staffScreen')">Makerspace Staff</button>
+    <button class="role-btn" onclick="showScreen('directorScreen')">Director</button>
+  </div>
+  <p class="note">Username and password fields are for visual demonstration only and are not validated. Role selection buttons are the only functional login mechanism. MakerSpaceHub+ uses simulated roles instead of full authentication.</p>
+</div>
+
+<!-- SCREEN 2: STUDENT DASHBOARD -->
+<div id="studentScreen" class="screen">
+  <h1>Student Dashboard</h1>
+  <div class="grid-2">
+    <div class="box">
+      <div class="box-title">Class List</div>
+      [Class List data here]
+    </div>
+    <div class="box">
+      <div class="box-title">Student Profile Info</div>
+      [Student Profile Info here]
+    </div>
+    <div class="box">
+      <div class="box-title">Announcements / Updates</div>
+      [Announcements data here]
+    </div>
+    <div class="box">
+      <div class="box-title">High-Level Financial Info</div>
+      [Financial Info data here]
+    </div>
+  </div>
+  <div class="center">
+    <button style="padding:14px 24px; font-size:16px;" onclick="showScreen('reservationScreen'); refreshReservationTable();">MakerSpaceHub+</button>
+  </div>
+  <br>
+  <span class="back-link" onclick="showScreen('loginScreen')">⬅ Back to Role Select</span>
+</div>
+
+<!-- SCREEN 3: RESERVATION SCREEN -->
+<div id="reservationScreen" class="screen">
+  <div class="top-bar">
+    <button class="reset-btn" onclick="resetAllData()">Reset All Data</button>
+  </div>
+  <div class="logo-placeholder">Logo Here</div>
+  <h1>Reserve Equipment</h1>
+
+  <div id="formError"></div>
+
+  <div class="card">
+    <label for="equipment">Equipment</label>
+    <select id="equipment">
+      <option value="">-- Select Equipment --</option>
+      <option value="3D Printer #1">3D Printer #1</option>
+      <option value="3D Printer #2">3D Printer #2</option>
+      <option value="Laser Cutter">Laser Cutter</option>
+      <option value="Soldering Station">Soldering Station</option>
+      <option value="Table Saw">Table Saw</option>
+    </select>
+
+    <label for="resDate">Reservation Date</label>
+    <input type="date" id="resDate">
+
+    <label for="timeBlock">Time Block</label>
+    <select id="timeBlock">
+      <option value="">-- Select Time Block --</option>
+      <option value="9:00–10:00 AM">9:00–10:00 AM</option>
+      <option value="10:00–11:00 AM">10:00–11:00 AM</option>
+      <option value="11:00–12:00 PM">11:00–12:00 PM</option>
+      <option value="1:00–2:00 PM">1:00–2:00 PM</option>
+      <option value="2:00–3:00 PM">2:00–3:00 PM</option>
+    </select>
+
+    <label for="studentName">Student Name</label>
+    <input type="text" id="studentName" placeholder="Enter your name">
+
+    <div id="dataCheckMsg"></div>
+
+    <button onclick="confirmReservation()">Confirm Reservation</button>
+  </div>
+
+  <h1>My Reservations</h1>
+  <table id="reservationTable">
+    <thead>
+      <tr>
+        <th>Equipment</th>
+        <th>Date</th>
+        <th>Time Block</th>
+        <th>Student Name</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="reservationTableBody">
+    </tbody>
+  </table>
+
+  <br>
+  <span class="back-link" onclick="showScreen('studentScreen')">⬅ Back to Student Dashboard</span>
+</div>
+
+<!-- SCREEN 4: CONFIRMATION SCREEN -->
+<div id="confirmationScreen" class="screen">
+  <div class="logo-placeholder">Logo Here</div>
+  <h1 class="center">Reservation Confirmed</h1>
+  <div class="confirmation-box">
+    <p><strong>Equipment:</strong> <span id="confEquipment"></span></p>
+    <p><strong>Date:</strong> <span id="confDate"></span></p>
+    <p><strong>Time Block:</strong> <span id="confTimeBlock"></span></p>
+    <p><strong>Student Name:</strong> <span id="confStudentName"></span></p>
+  </div>
+  <div class="center">
+    <button onclick="showScreen('reservationScreen'); refreshReservationTable();">Reserve Additional Equipment</button>
+  </div>
+  <br>
+  <div class="center">
+    <span class="back-link" onclick="showScreen('studentScreen')">⬅ Back to Student Dashboard</span>
+  </div>
+</div>
+
+<!-- SCREEN 5: STAFF OUT OF SCOPE -->
+<div id="staffScreen" class="screen">
+  <div class="card">
+    <p><strong>Staff Dashboard</strong> — Out of scope for Prototype 2. This area is not functionally implemented in this prototype.</p>
+    <button onclick="showScreen('loginScreen')">⬅ Back to Role Select</button>
+  </div>
+</div>
+
+<!-- SCREEN 6: DIRECTOR OUT OF SCOPE -->
+<div id="directorScreen" class="screen">
+  <div class="card">
+    <p><strong>Director Dashboard</strong> — Out of scope for Prototype 2. This area is not functionally implemented in this prototype.</p>
+    <button onclick="showScreen('loginScreen')">⬅ Back to Role Select</button>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'makerspacehub_reservations';
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function goToStudent() {
+    showScreen('studentScreen');
+  }
+
+  function getReservations() {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  }
+
+  function saveReservations(reservations) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reservations));
+  }
+
+  function confirmReservation() {
+    const equipment = document.getElementById('equipment').value;
+    const date = document.getElementById('resDate').value;
+    const timeBlock = document.getElementById('timeBlock').value;
+    const studentName = document.getElementById('studentName').value.trim();
+
+    const formError = document.getElementById('formError');
+    const dataCheckMsg = document.getElementById('dataCheckMsg');
+    formError.innerHTML = '';
+    dataCheckMsg.innerHTML = '';
+
+    if (!equipment || !date || !timeBlock || !studentName) {
+      formError.innerHTML = '<div class="error-msg">Please fill in all fields.</div>';
+      return;
+    }
+
+    const reservations = getReservations();
+
+    const conflict = reservations.some(r =>
+      r.equipment === equipment &&
+      r.date === date &&
+      r.timeBlock === timeBlock &&
+      r.status === 'Confirmed'
+    );
+
+    if (conflict) {
+      dataCheckMsg.innerHTML = '<div class="error-msg">This equipment is already booked for that date and time block. Please choose a different slot.</div>';
+      return;
+    }
+
+    const newReservation = {
+      id: Date.now().toString(),
+      equipment: equipment,
+      date: date,
+      timeBlock: timeBlock,
+      studentName: studentName,
+      status: 'Confirmed'
+    };
+
+    reservations.push(newReservation);
+    saveReservations(reservations);
+
+    document.getElementById('confEquipment').textContent = equipment;
+    document.getElementById('confDate').textContent = date;
+    document.getElementById('confTimeBlock').textContent = timeBlock;
+    document.getElementById('confStudentName').textContent = studentName;
+
+    // Clear form
+    document.getElementById('equipment').value = '';
+    document.getElementById('resDate').value = '';
+    document.getElementById('timeBlock').value = '';
+    document.getElementById('studentName').value = '';
+
+    showScreen('confirmationScreen');
+    refreshReservationTable();
+  }
+
+  function refreshReservationTable() {
+    const reservations = getReservations();
+    const tbody = document.getElementById('reservationTableBody');
+    tbody.innerHTML = '';
+
+    if (reservations.length === 0) {
+      const row = document.createElement('tr');
+      row.innerHTML = '<td colspan="6" style="text-align:center; font-style:italic; color:#777;">No reservations yet.</td>';
+      tbody.appendChild(row);
+      return;
+    }
+
+    reservations.forEach(r => {
+      const row = document.createElement('tr');
+      const statusDisplay = r.status === 'Cancelled'
+        ? '<span class="status-cancelled">Cancelled</span>'
+        : 'Confirmed';
+      const actionCell = r.status === 'Confirmed'
+        ? `<button onclick="cancelReservation('${r.id}')">Cancel</button>`
+        : '—';
+
+      row.innerHTML = `
+        <td>${escapeHtml(r.equipment)}</td>
+        <td>${escapeHtml(r.date)}</td>
+        <td>${escapeHtml(r.timeBlock)}</td>
+        <td>${escapeHtml(r.studentName)}</td>
+        <td>${statusDisplay}</td>
+        <td>${actionCell}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  function cancelReservation(id) {
+    const reservations = getReservations();
+    const target = reservations.find(r => r.id === id);
+    if (target) {
+      target.status = 'Cancelled';
+      saveReservations(reservations);
+      refreshReservationTable();
+    }
+  }
+
+  function resetAllData() {
+    if (confirm('Are you sure you want to reset all reservation data? This cannot be undone.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      refreshReservationTable();
+      document.getElementById('formError').innerHTML = '';
+      document.getElementById('dataCheckMsg').innerHTML = '';
+    }
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // Initialize table on load
+  refreshReservationTable();
+</script>
+
+</body>
+</html>
