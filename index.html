@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>MakerSpaceHub+ Prototype 2</title>
-<script type="text/javascript" src="/ruxitagentjs_ICANVfqru_10343260715123811.js" data-dtconfig="rid=RID_1041050055|rpid=-1070120941|domain=abbvienet.com|reportUrl=/rb_16a183f6-c871-4082-850b-a1f7a2ecd0b1|app=ea7c4b59f27d43eb|cuc=oao3vfhf|owasp=1|mel=100000|featureHash=ICANVfqru|dpvc=1|lastModification=1790507166068|tp=500,50,0|rdnt=1|uxrgce=1|srbbv=2|agentUri=/ruxitagentjs_ICANVfqru_10343260715123811.js"></script><style>
+  <!--Embedding MakerSpaceHub+Logo/Program Formatting-->
+<script type="text/javascript" src="/ruxitagentjs_ICANVfqru_10343260715123811.js" data-dtconfig="rid=RID_-1591710944|rpid=238486222|domain=abbvienet.com|reportUrl=/rb_16a183f6-c871-4082-850b-a1f7a2ecd0b1|app=ea7c4b59f27d43eb|cuc=oao3vfhf|owasp=1|mel=100000|featureHash=ICANVfqru|dpvc=1|lastModification=1792791076080|tp=500,50,0|rdnt=1|uxrgce=1|srbbv=2|agentUri=/ruxitagentjs_ICANVfqru_10343260715123811.js"></script><script type="text/javascript" src="/ruxitagentjs_ICANVfqru_10343260715123811.js" data-dtconfig="rid=RID_1041050055|rpid=-1070120941|domain=abbvienet.com|reportUrl=/rb_16a183f6-c871-4082-850b-a1f7a2ecd0b1|app=ea7c4b59f27d43eb|cuc=oao3vfhf|owasp=1|mel=100000|featureHash=ICANVfqru|dpvc=1|lastModification=1790507166068|tp=500,50,0|rdnt=1|uxrgce=1|srbbv=2|agentUri=/ruxitagentjs_ICANVfqru_10343260715123811.js"></script><style>
   * { box-sizing: border-box; }
   body {
     font-family: Arial, Helvetica, sans-serif;
@@ -63,15 +64,16 @@
     background: #fff;
   }
   button {
-    border: 1px solid #000;
-    background: #eee;
+    border: 1px solid #0070D0;
+    background: #0080FF;
+    color: #fff;
     padding: 8px 14px;
     font-size: 14px;
     cursor: pointer;
     margin-top: 10px;
   }
   button:hover {
-    background: #ddd;
+    background: #0070D0;
   }
   .role-btn {
     display: block;
@@ -154,6 +156,8 @@
     color: #777;
     font-style: italic;
   }
+  .low-stock { color: #c00; font-weight: bold; }
+  .ok-stock { color: #0a7a0a; }
 </style>
 </head>
 <body>
@@ -288,7 +292,20 @@
 <!-- SCREEN 5: STAFF OUT OF SCOPE -->
 <div id="staffScreen" class="screen">
   <div class="card">
-    <p><strong>Staff Dashboard</strong> — Out of scope for Prototype 2. This area is not functionally implemented in this prototype.</p>
+    <h1>Staff Dashboard — Consumables Inventory</h1>
+    <p>This view shows current consumable stock levels, with low-stock items flagged for reorder.</p>
+    <div id="consumablesAlertBanner"></div>
+    <table id="consumablesTable">
+      <thead>
+        <tr>
+          <th>Consumable</th>
+          <th>Quantity</th>
+          <th>Minimum Threshold</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="consumablesTableBody"></tbody>
+    </table>
     <button onclick="showScreen('loginScreen')">⬅ Back to Role Select</button>
   </div>
 </div>
@@ -305,9 +322,12 @@
   const STORAGE_KEY = 'makerspacehub_reservations';
 
   function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'staffScreen') {
+    renderConsumablesTable();
   }
+}
   function attemptLogin(targetScreenId) {
     // Username/password are NOT validated for correctness (any value is accepted),
     // but both fields must be non-blank before allowing navigation past the login screen.
@@ -333,6 +353,55 @@
   function saveReservations(reservations) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(reservations));
   }
+
+const CONSUMABLES_KEY = 'makerspacehub_consumables';
+
+function getConsumables() {
+  const raw = localStorage.getItem(CONSUMABLES_KEY);
+  if (raw) {
+    return JSON.parse(raw);
+  }
+  const defaultConsumables = [
+    { name: 'Filament (PLA)', quantity: 12, minThreshold: 5 },
+    { name: 'Resin', quantity: 3, minThreshold: 5 },
+    { name: 'Solder', quantity: 20, minThreshold: 5 },
+    { name: 'Sandpaper', quantity: 2, minThreshold: 5 },
+    { name: 'Super Glue', quantity: 8, minThreshold: 5 }
+  ];
+  saveConsumables(defaultConsumables);
+  return defaultConsumables;
+}
+
+function saveConsumables(consumables) {
+  localStorage.setItem(CONSUMABLES_KEY, JSON.stringify(consumables));
+}
+
+function renderConsumablesTable() {
+  const consumables = getConsumables();
+  const tableBody = document.getElementById('consumablesTableBody');
+  const alertBanner = document.getElementById('consumablesAlertBanner');
+  let lowStockCount = 0;
+
+  tableBody.innerHTML = consumables.map(item => {
+    const isLowStock = item.quantity <= item.minThreshold;
+    if (isLowStock) lowStockCount++;
+    return `
+      <tr>
+        <td>${escapeHtml(item.name)}</td>
+        <td class="${isLowStock ? 'low-stock' : 'ok-stock'}">${item.quantity}</td>
+        <td>${item.minThreshold}</td>
+        <td><span class="${isLowStock ? 'low-stock' : 'ok-stock'}">${isLowStock ? 'Low Stock — Order More' : 'OK'}</span></td>
+      </tr>
+    `;
+  }).join('');
+
+  if (lowStockCount > 0) {
+    alertBanner.innerHTML = `<div class="error-msg low-stock">⚠ ${lowStockCount} consumable(s) low on stock — please order more.</div>`;
+  } else {
+    alertBanner.innerHTML = '';
+  }
+}
+
 
   function confirmReservation() {
     const equipment = document.getElementById('equipment').value;
